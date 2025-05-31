@@ -1,0 +1,4 @@
+id,name,price,category,timestamp
+1,Sample Product A,29.99,Electronics,2025-05-31 05:00:00+00:00
+2,Sample Product B,45.5,Books,2025-05-31 05:01:00+00:00
+3,Sample Product C,12.25,Electronics,2025-05-31 05:02:00+00:00
