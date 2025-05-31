@@ -1,0 +1,142 @@
+/**
+ * API Service - Handles all API communications
+ */
+
+class ApiService {
+    constructor() {
+        this.baseUrl = '/api/v1';
+    }
+
+    async request(endpoint, options = {}) {
+        const url = `${this.baseUrl}${endpoint}`;
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+                ...options.headers
+            },
+            ...options
+        };
+
+        if (config.body && typeof config.body === 'object' && !(config.body instanceof FormData)) {
+            config.body = JSON.stringify(config.body);
+        }
+
+        try {
+            const response = await fetch(url, config);
+            
+            if (!response.ok) {
+                const errorText = await response.text();
+                throw new Error(`HTTP ${response.status}: ${errorText}`);
+            }
+
+            const contentType = response.headers.get('content-type');
+            if (contentType && contentType.includes('application/json')) {
+                return await response.json();
+            }
+            
+            return await response.text();
+        } catch (error) {
+            console.error(`API request failed: ${url}`, error);
+            throw error;
+        }
+    }
+
+    // Pipeline endpoints
+    async getPipelines(params = {}) {
+        const query = new URLSearchParams(params).toString();
+        return this.request(`/pipelines${query ? `?${query}` : ''}`);
+    }
+
+    async getPipeline(id) {
+        return this.request(`/pipelines/${id}`);
+    }
+
+    async createPipeline(pipeline) {
+        return this.request('/pipelines', {
+            method: 'POST',
+            body: pipeline
+        });
+    }
+
+    async updatePipeline(id, pipeline) {
+        return this.request(`/pipelines/${id}`, {
+            method: 'PUT',
+            body: pipeline
+        });
+    }
+
+    async deletePipeline(id) {
+        return this.request(`/pipelines/${id}`, {
+            method: 'DELETE'
+        });
+    }
+
+    async executePipeline(id, parameters = {}) {
+        return this.request(`/pipelines/${id}/execute`, {
+            method: 'POST',
+            body: parameters
+        });
+    }
+
+    // Execution endpoints
+    async getExecutions(params = {}) {
+        const query = new URLSearchParams(params).toString();
+        return this.request(`/executions${query ? `?${query}` : ''}`);
+    }
+
+    async getExecution(id) {
+        return this.request(`/executions/${id}`);
+    }
+
+    async cancelExecution(id) {
+        return this.request(`/executions/${id}/cancel`, {
+            method: 'POST'
+        });
+    }
+
+    // File endpoints
+    async getFiles() {
+        return this.request('/files');
+    }
+
+    async uploadFile(formData) {
+        return this.request('/files/upload', {
+            method: 'POST',
+            body: formData,
+            headers: {} // Remove Content-Type to let browser set boundary
+        });
+    }
+
+    async deleteFile(filePath) {
+        return this.request('/files', {
+            method: 'DELETE',
+            body: { file_path: filePath }
+        });
+    }
+
+    async previewFile(filePath) {
+        return this.request('/files/preview', {
+            method: 'POST',
+            body: { file_path: filePath }
+        });
+    }
+
+    async getOutputFiles() {
+        return this.request('/files/outputs');
+    }
+
+    // System endpoints
+    async getStatistics() {
+        return this.request('/statistics');
+    }
+
+    async getHealth() {
+        return this.request('/health');
+    }
+
+    async getSchedulerStatus() {
+        return this.request('/scheduler/status');
+    }
+}
+
+export default ApiService;
