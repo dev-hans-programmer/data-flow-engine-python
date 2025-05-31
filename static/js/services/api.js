@@ -1,5 +1,6 @@
 /**
  * API Service - Handles all API communications
+ * Updated with notification integration
  */
 
 export default class ApiService {
