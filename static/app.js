@@ -117,7 +117,7 @@ function showSection(section) {
 async function loadDashboard() {
     try {
         // Load system statistics
-        const stats = await fetchJSON('/api/v1/executions/statistics');
+        const stats = await fetchJSON('/api/v1/statistics');
         updateDashboardStats(stats);
         
         // Load recent executions

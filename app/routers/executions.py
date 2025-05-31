@@ -214,8 +214,14 @@ async def get_execution_statistics():
         success_rate = (completed / (completed + failed) * 100) if (completed + failed) > 0 else 0
         
         # Average execution time for completed executions
-        completed_executions = [e for e in all_executions if e.status == ExecutionStatus.COMPLETED and e.duration]
-        avg_duration = sum(e.duration for e in completed_executions) / len(completed_executions) if completed_executions else 0
+        total_duration = 0.0
+        completed_count = 0
+        for execution in all_executions:
+            if execution.status == ExecutionStatus.COMPLETED and execution.duration:
+                total_duration += execution.duration
+                completed_count += 1
+        
+        avg_duration = total_duration / completed_count if completed_count > 0 else 0
         
         # Recent activity (last 24 hours)
         from datetime import datetime, timedelta
