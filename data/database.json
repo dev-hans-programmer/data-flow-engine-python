@@ -36,6 +36,43 @@
       "created_at": "2025-05-31 05:03:32.493639",
       "updated_at": "2025-05-31 05:04:07.628452",
       "created_by": null
+    },
+    {
+      "id": "0dcec088-5634-4d66-ba53-f8a8278a7280",
+      "name": "Simple Data Processor",
+      "description": "Processes existing API data",
+      "status": "active",
+      "steps": [
+        {
+          "id": "2c4c346d-c8a9-4bf8-9d02-2c856b33eb97",
+          "name": "Load Existing Data",
+          "type": "load",
+          "description": null,
+          "enabled": true,
+          "retry_on_failure": true,
+          "max_retries": 3,
+          "source_path": "uploads/api_data_api_source_20250531_050342_20250531_050343.json",
+          "format": "json",
+          "options": {}
+        },
+        {
+          "id": "5daf067d-0d4f-47b9-b7c7-a1ecb21dcc65",
+          "name": "Save as CSV",
+          "type": "save",
+          "description": null,
+          "enabled": true,
+          "retry_on_failure": true,
+          "max_retries": 3,
+          "output_path": "outputs/processed_data.csv",
+          "format": "csv",
+          "options": {}
+        }
+      ],
+      "schedule": null,
+      "metadata": {},
+      "created_at": "2025-05-31 05:04:38.162429",
+      "updated_at": "2025-05-31 05:04:42.796447",
+      "created_by": null
     }
   ],
   "executions": [
@@ -70,6 +107,34 @@
       "output_files": [],
       "logs": [],
       "created_at": "2025-05-31 05:04:12.849283"
+    },
+    {
+      "id": "11ccd343-8b0e-4a60-814e-10c7ea1897b1",
+      "pipeline_id": "0dcec088-5634-4d66-ba53-f8a8278a7280",
+      "pipeline_name": "Simple Data Processor",
+      "status": "running",
+      "start_time": "2025-05-31 05:04:46.304492",
+      "end_time": null,
+      "duration": null,
+      "parameters": {},
+      "triggered_by": "manual",
+      "steps": [
+        {
+          "step_id": "2c4c346d-c8a9-4bf8-9d02-2c856b33eb97",
+          "step_name": "Load Existing Data",
+          "status": "running",
+          "start_time": "2025-05-31 05:04:46.307319",
+          "end_time": null,
+          "duration": null,
+          "error_message": null,
+          "retry_count": 0,
+          "output_data": null
+        }
+      ],
+      "error_message": null,
+      "output_files": [],
+      "logs": [],
+      "created_at": "2025-05-31 05:04:46.301042"
     }
   ],
   "files": [
