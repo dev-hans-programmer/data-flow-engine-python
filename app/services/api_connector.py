@@ -57,7 +57,14 @@ class APIConnector:
         source = self.active_polls[source_id]
         
         try:
-            async with aiohttp.ClientSession() as session:
+            # Create SSL context that doesn't verify certificates (development only)
+            import ssl
+            ssl_context = ssl.create_default_context()
+            ssl_context.check_hostname = False
+            ssl_context.verify_mode = ssl.CERT_NONE
+            
+            connector = aiohttp.TCPConnector(ssl=ssl_context)
+            async with aiohttp.ClientSession(connector=connector) as session:
                 # Prepare request
                 kwargs = {
                     'method': source['method'],
