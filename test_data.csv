@@ -1,0 +1,10 @@
+date,product,sales_amount,region
+2024-01-01,Product A,1500.50,North
+2024-01-01,Product B,2300.75,South
+2024-01-01,Product A,800.25,East
+2024-01-02,Product C,1200.00,North
+2024-01-02,Product B,1800.50,West
+2024-01-02,Product A,950.75,South
+2024-01-03,Product C,2100.25,East
+2024-01-03,Product A,1750.00,North
+2024-01-03,Product B,1400.50,West
