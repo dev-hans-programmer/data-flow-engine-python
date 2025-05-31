@@ -269,7 +269,7 @@ class PipelineEngine:
         
         # Prepare output path
         output_path = Path(step.output_path)
-        if not output_path.is_absolute():
+        if not output_path.is_absolute() and not str(output_path).startswith(settings.output_directory):
             output_path = Path(settings.output_directory) / output_path
         
         # Ensure output directory exists
