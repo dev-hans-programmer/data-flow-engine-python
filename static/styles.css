@@ -78,14 +78,38 @@ body {
     letter-spacing: 0.025em;
 }
 
-.status-active { background-color: hsl(var(--success) / 0.1); color: hsl(var(--success)); }
-.status-draft { background-color: hsl(var(--secondary) / 0.1); color: hsl(var(--secondary)); }
-.status-inactive { background-color: hsl(var(--warning) / 0.1); color: hsl(var(--warning)); }
-.status-running { background-color: hsl(var(--info) / 0.1); color: hsl(var(--info)); }
-.status-completed { background-color: hsl(var(--success) / 0.1); color: hsl(var(--success)); }
-.status-failed { background-color: hsl(var(--danger) / 0.1); color: hsl(var(--danger)); }
-.status-cancelled { background-color: hsl(var(--secondary) / 0.1); color: hsl(var(--secondary)); }
-.status-pending { background-color: hsl(var(--warning) / 0.1); color: hsl(var(--warning)); }
+.status-active { 
+    background-color: hsl(var(--success) / 0.1); 
+    color: hsl(var(--success)) !important; 
+}
+.status-draft { 
+    background-color: hsl(var(--secondary) / 0.1); 
+    color: hsl(var(--secondary)) !important; 
+}
+.status-inactive { 
+    background-color: hsl(var(--warning) / 0.1); 
+    color: hsl(var(--warning)) !important; 
+}
+.status-running { 
+    background-color: hsl(var(--info) / 0.1); 
+    color: hsl(var(--info)) !important; 
+}
+.status-completed { 
+    background-color: hsl(var(--success) / 0.1); 
+    color: hsl(var(--success)) !important; 
+}
+.status-failed { 
+    background-color: hsl(var(--danger) / 0.1); 
+    color: hsl(var(--danger)) !important; 
+}
+.status-cancelled { 
+    background-color: hsl(var(--secondary) / 0.1); 
+    color: hsl(var(--secondary)) !important; 
+}
+.status-pending { 
+    background-color: hsl(var(--warning) / 0.1); 
+    color: hsl(var(--warning)) !important; 
+}
 
 /* Tables */
 .table {
@@ -423,72 +447,72 @@ body {
     color: hsl(var(--text-muted)) !important;
 }
 
-/* Global text visibility fixes */
+/* Restore proper color theme */
 body, html {
-    color: hsl(var(--text)) !important;
+    color: hsl(var(--text));
 }
 
-/* Card content text */
+/* Card content - preserve original styling */
 .card-body,
-.card-body *,
 .card-title,
 .card-text {
-    color: hsl(var(--text)) !important;
+    color: hsl(var(--text));
 }
 
-/* Table text */
-.table,
+/* Table text - only fix where needed */
 .table td,
-.table th,
-.table tbody tr td {
-    color: hsl(var(--text)) !important;
+.table th {
+    color: hsl(var(--text));
 }
 
-/* Button text */
-.btn {
-    color: inherit !important;
-}
-
+/* Button colors - restore original Bootstrap behavior */
 .btn-primary {
-    color: white !important;
+    color: white;
 }
 
 .btn-secondary {
-    color: white !important;
+    color: white;
 }
 
-.btn-outline-primary,
-.btn-outline-secondary,
-.btn-outline-success,
-.btn-outline-danger {
-    color: hsl(var(--text)) !important;
-}
-
-/* Navigation text */
+/* Navigation - keep white text */
 .navbar-nav .nav-link {
-    color: white !important;
+    color: white;
 }
 
-/* Input and form elements */
+/* Form elements - basic styling only */
 .form-control,
 .form-select {
-    color: hsl(var(--text)) !important;
-    background-color: hsl(var(--surface)) !important;
+    color: hsl(var(--text));
+    background-color: hsl(var(--surface));
 }
 
-/* General text elements */
-p, span, div, label, small, strong, em, h1, h2, h3, h4, h5, h6 {
-    color: hsl(var(--text)) !important;
+/* General text elements - more specific targeting */
+.main-content p, 
+.main-content span:not(.status-badge):not(.badge), 
+.main-content div:not(.btn):not(.alert):not(.status-badge),
+.main-content label, 
+.main-content small, 
+.main-content strong, 
+.main-content em, 
+.main-content h1, 
+.main-content h2, 
+.main-content h3, 
+.main-content h4, 
+.main-content h5, 
+.main-content h6 {
+    color: hsl(var(--text));
 }
 
 /* List items */
-li, ul, ol {
-    color: hsl(var(--text)) !important;
+.main-content li, 
+.main-content ul, 
+.main-content ol {
+    color: hsl(var(--text));
 }
 
-/* Ensure status badges maintain their colors */
+/* Status badges keep their original colors */
 .status-badge {
-    color: inherit !important;
+    color: inherit;
 }
 
 /* Pipeline Details Styles */
