@@ -41,6 +41,24 @@ class PipelineSystemApp {
         window.notificationService = this.notificationService;
         
         this.init();
+        
+        // Add demo notifications after a short delay
+        setTimeout(() => this.addDemoNotifications(), 2000);
+    }
+
+    // Add some demo notifications to showcase the system
+    addDemoNotifications() {
+        if (this.notificationService) {
+            this.notificationService.success(
+                'System Ready',
+                'Pipeline system is running and ready for use'
+            );
+            
+            this.notificationService.info(
+                'Welcome',
+                'Use the notification icon to view all system alerts and updates'
+            );
+        }
     }
 
     init() {

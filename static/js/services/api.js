@@ -67,10 +67,21 @@ class ApiService {
     }
 
     async createPipeline(pipeline) {
-        return this.request('/pipelines', {
+        const result = await this.request('/pipelines', {
             method: 'POST',
             body: pipeline
         });
+        
+        // Notify success
+        if (this.notificationService) {
+            this.notificationService.success(
+                'Pipeline Created',
+                `Pipeline "${pipeline.name}" has been created successfully`,
+                { pipelineId: result.id, pipelineName: pipeline.name }
+            );
+        }
+        
+        return result;
     }
 
     async updatePipeline(id, pipeline) {
@@ -87,10 +98,21 @@ class ApiService {
     }
 
     async executePipeline(id, parameters = {}) {
-        return this.request(`/pipelines/${id}/execute`, {
+        const result = await this.request(`/pipelines/${id}/execute`, {
             method: 'POST',
             body: parameters
         });
+        
+        // Notify execution started
+        if (this.notificationService) {
+            this.notificationService.info(
+                'Pipeline Execution Started',
+                `Pipeline execution has been initiated`,
+                { pipelineId: id, executionId: result.id }
+            );
+        }
+        
+        return result;
     }
 
     // Execution endpoints
@@ -115,11 +137,23 @@ class ApiService {
     }
 
     async uploadFile(formData) {
-        return this.request('/files/upload', {
+        const result = await this.request('/files/upload', {
             method: 'POST',
             body: formData,
             headers: {} // Remove Content-Type to let browser set boundary
         });
+        
+        // Notify success
+        if (this.notificationService) {
+            const fileName = formData.get('file')?.name || 'Unknown file';
+            this.notificationService.success(
+                'File Uploaded',
+                `File "${fileName}" has been uploaded successfully`,
+                { fileName, filePath: result.path }
+            );
+        }
+        
+        return result;
     }
 
     async deleteFile(filePath) {
@@ -151,6 +185,47 @@ class ApiService {
 
     async getSchedulerStatus() {
         return this.request('/scheduler/status');
+    }
+
+    // Execution monitoring for notifications
+    async monitorExecution(executionId, previousStatus = null) {
+        try {
+            const execution = await this.getExecution(executionId);
+            
+            // Check if status changed and notify accordingly
+            if (this.notificationService && execution.status !== previousStatus) {
+                switch (execution.status) {
+                    case 'completed':
+                        this.notificationService.success(
+                            'Pipeline Completed',
+                            `Pipeline "${execution.pipeline_name}" completed successfully`,
+                            { executionId, pipelineId: execution.pipeline_id }
+                        );
+                        break;
+                    case 'failed':
+                        this.notificationService.error(
+                            'Pipeline Failed',
+                            `Pipeline "${execution.pipeline_name}" failed: ${execution.error_message || 'Unknown error'}`,
+                            { executionId, pipelineId: execution.pipeline_id, error: execution.error_message }
+                        );
+                        break;
+                    case 'running':
+                        if (previousStatus === 'pending') {
+                            this.notificationService.info(
+                                'Pipeline Running',
+                                `Pipeline "${execution.pipeline_name}" is now running`,
+                                { executionId, pipelineId: execution.pipeline_id }
+                            );
+                        }
+                        break;
+                }
+            }
+            
+            return execution;
+        } catch (error) {
+            console.error('Failed to monitor execution:', error);
+            return null;
+        }
     }
 }
 
