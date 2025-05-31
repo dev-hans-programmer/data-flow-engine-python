@@ -15,6 +15,8 @@ from contextlib import asynccontextmanager
 from app.routers import pipelines, executions, files, api_sources, triggers
 from app.utils.logger import setup_logging
 from app.scheduler import PipelineScheduler
+from app.db_service import db_service
+from app.db_connection import init_database, close_database
 from config import settings
 
 

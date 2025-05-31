@@ -2,7 +2,7 @@ modules = ["python-3.11"]
 
 [nix]
 channel = "stable-24_05"
-packages = ["arrow-cpp", "glibcLocales", "libxcrypt", "pkg-config"]
+packages = ["arrow-cpp", "glibcLocales", "libxcrypt", "pkg-config", "postgresql"]
 
 [workflows]
 runButton = "Project"

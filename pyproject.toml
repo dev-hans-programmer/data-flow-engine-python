@@ -16,4 +16,7 @@ dependencies = [
     "uvicorn>=0.34.2",
     "aiohttp>=3.12.4",
     "watchdog>=6.0.0",
+    "sqlalchemy>=2.0.41",
+    "asyncpg>=0.30.0",
+    "alembic>=1.16.1",
 ]
