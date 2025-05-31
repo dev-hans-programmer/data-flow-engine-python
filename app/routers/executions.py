@@ -194,7 +194,7 @@ async def get_running_executions():
         raise HTTPException(status_code=500, detail=str(e))
 
 
-@router.get("/executions/statistics")
+@router.get("/statistics")
 async def get_execution_statistics():
     """Get execution statistics"""
     try:

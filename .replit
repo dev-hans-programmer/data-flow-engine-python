@@ -27,3 +27,7 @@ waitForPort = 5000
 
 [deployment]
 run = ["sh", "-c", "pip install fastapi uvicorn pandas numpy pydantic aiofiles python-multipart psutil openpyxl && python main.py"]
+
+[[ports]]
+localPort = 5000
+externalPort = 80
