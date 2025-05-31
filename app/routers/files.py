@@ -322,6 +322,12 @@ async def download_output_file(file_path: str):
         output_dir = Path(settings.output_directory)
         file_full_path = output_dir / file_path
         
+        # Debug logging
+        logger.info(f"Download request - file_path: {file_path}")
+        logger.info(f"Download request - output_dir: {output_dir}")
+        logger.info(f"Download request - file_full_path: {file_full_path}")
+        logger.info(f"Download request - file exists: {file_full_path.exists()}")
+        
         if not file_full_path.exists() or not file_full_path.is_file():
             raise HTTPException(status_code=404, detail="Output file not found")
         
