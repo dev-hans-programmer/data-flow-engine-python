@@ -958,3 +958,54 @@ body, html {
         right: 0;
     }
 }
+
+/* Notification System Styles */
+.notification-dropdown {
+    border: 0;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+.notification-dropdown .dropdown-item {
+    border-bottom: 1px solid var(--bs-border-color);
+    padding: 0.75rem 1rem;
+}
+
+.notification-dropdown .dropdown-item:last-child {
+    border-bottom: none;
+}
+
+.notification-dropdown .dropdown-item:hover {
+    background-color: var(--bs-light);
+}
+
+.notification-dropdown .dropdown-header {
+    background-color: var(--bs-primary);
+    color: white;
+    padding: 0.75rem 1rem;
+    margin: 0;
+    border-radius: 0;
+}
+
+#notification-badge {
+    font-size: 0.7rem;
+    min-width: 1.2rem;
+    height: 1.2rem;
+    line-height: 1;
+    padding: 0.2rem 0.3rem;
+}
+
+.toast-container {
+    z-index: 9999;
+}
+
+.toast {
+    min-width: 350px;
+}
+
+.toast .toast-header {
+    font-weight: 600;
+}
+
+.toast .toast-body {
+    font-size: 0.9rem;
+}

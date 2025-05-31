@@ -5,6 +5,11 @@
 class ApiService {
     constructor() {
         this.baseUrl = '/api/v1';
+        this.notificationService = null;
+    }
+
+    setNotificationService(notificationService) {
+        this.notificationService = notificationService;
     }
 
     async request(endpoint, options = {}) {
@@ -37,6 +42,16 @@ class ApiService {
             return await response.text();
         } catch (error) {
             console.error(`API request failed: ${url}`, error);
+            
+            // Notify user of API errors
+            if (this.notificationService) {
+                this.notificationService.error(
+                    'API Error',
+                    `Failed to ${config.method || 'GET'} ${endpoint}: ${error.message}`,
+                    { endpoint, error: error.message }
+                );
+            }
+            
             throw error;
         }
     }

@@ -4,6 +4,7 @@
 
 // Import components and templates
 import ApiService from './services/api.js';
+import NotificationService from './services/notification.js';
 import UIUtils from './utils/ui.js';
 import DashboardComponent from './components/dashboard.js';
 import PipelinesComponent from './components/pipelines.js';
@@ -19,7 +20,11 @@ class PipelineSystemApp {
         
         // Initialize services
         this.apiService = new ApiService();
+        this.notificationService = new NotificationService();
         this.uiUtils = new UIUtils();
+        
+        // Connect notification service to API service
+        this.apiService.setNotificationService(this.notificationService);
         
         // Initialize components
         this.dashboard = new DashboardComponent(this.apiService, this.uiUtils);
@@ -33,6 +38,7 @@ class PipelineSystemApp {
         window.executionManager = this.executions;
         window.fileManager = this.files;
         window.transformationBuilder = this.transformationBuilder;
+        window.notificationService = this.notificationService;
         
         this.init();
     }
