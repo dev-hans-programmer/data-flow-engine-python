@@ -37,6 +37,11 @@ class LayoutTemplates {
                                 </a>
                             </li>
                             <li class="nav-item">
+                                <a class="nav-link" data-section="transformations" href="#">
+                                    <i class="fas fa-magic"></i> Transform Builder
+                                </a>
+                            </li>
+                            <li class="nav-item">
                                 <a class="nav-link" data-section="monitoring" href="#">
                                     <i class="fas fa-chart-line"></i> Monitoring
                                 </a>
@@ -66,6 +71,10 @@ class LayoutTemplates {
                 
                 <div id="files-section" class="section-content" style="display: none;">
                     <div id="files-content"></div>
+                </div>
+                
+                <div id="transformations-section" class="section-content" style="display: none;">
+                    <div id="transformations-content"></div>
                 </div>
                 
                 <div id="monitoring-section" class="section-content" style="display: none;">
