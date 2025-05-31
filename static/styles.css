@@ -365,6 +365,32 @@ body {
     box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
 }
 
+/* Modal Styles */
+.modal-content {
+    background-color: hsl(var(--surface));
+    color: hsl(var(--text));
+    border: 1px solid hsl(var(--border));
+}
+
+.modal-header {
+    background-color: hsl(var(--light));
+    border-bottom: 1px solid hsl(var(--border));
+}
+
+.modal-title {
+    color: hsl(var(--text));
+    font-weight: 600;
+}
+
+.modal-body {
+    color: hsl(var(--text));
+}
+
+.modal-footer {
+    background-color: hsl(var(--light));
+    border-top: 1px solid hsl(var(--border));
+}
+
 /* Pipeline Details Styles */
 .pipeline-flow {
     max-height: 400px;

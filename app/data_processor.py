@@ -112,6 +112,38 @@ class DataProcessor:
             elif operation_type == "reset_index":
                 df = df.reset_index(drop=True)
                 
+            elif operation_type == "flatten":
+                # Flatten JSON-like nested structures in DataFrame
+                separator = operation.get("separator", "_")
+                
+                def flatten_json_column(col_data):
+                    """Flatten JSON objects in a pandas Series"""
+                    if col_data.dtype == 'object':
+                        # Check if column contains dict-like objects
+                        sample_value = col_data.dropna().iloc[0] if not col_data.dropna().empty else None
+                        if isinstance(sample_value, dict):
+                            # Use json_normalize to flatten the column
+                            import json
+                            flattened = pd.json_normalize(col_data.dropna().tolist(), sep=separator)
+                            return flattened
+                    return None
+                
+                # Find columns with nested data and flatten them
+                new_columns = {}
+                for col in df.columns:
+                    flattened = flatten_json_column(df[col])
+                    if flattened is not None:
+                        # Add flattened columns with original column name prefix
+                        for flat_col in flattened.columns:
+                            new_col_name = f"{col}{separator}{flat_col}"
+                            new_columns[new_col_name] = flattened[flat_col]
+                        # Remove original nested column
+                        df = df.drop(columns=[col])
+                
+                # Add new flattened columns
+                for col_name, col_data in new_columns.items():
+                    df[col_name] = col_data.reindex(df.index)
+                
             else:
                 raise DataProcessingError(f"Unknown transformation operation: {operation_type}")
             
