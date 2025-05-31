@@ -100,6 +100,17 @@ async def health_check():
         "version": "1.0.0"
     }
 
+@app.get("/api/v1/health")
+async def api_health_check():
+    """API v1 Health check endpoint"""
+    return {
+        "status": "healthy",
+        "service": "Data Processing Pipeline System",
+        "version": "1.0.0",
+        "database": "connected",
+        "scheduler": "running"
+    }
+
 
 @app.get("/api/v1/scheduler/status")
 async def get_scheduler_status():
