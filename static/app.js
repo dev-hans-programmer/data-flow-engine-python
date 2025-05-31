@@ -360,6 +360,161 @@ async function executePipeline(pipelineId) {
     }
 }
 
+async function viewPipelineDetails(pipelineId) {
+    try {
+        const pipeline = await fetchJSON(`/api/v1/pipelines/${pipelineId}`);
+        const modal = new bootstrap.Modal(document.getElementById('pipelineDetailsModal'));
+        
+        // Store pipeline ID for execute button
+        window.currentPipelineId = pipelineId;
+        
+        const content = document.getElementById('pipeline-details-content');
+        content.innerHTML = `
+            <div class="row mb-4">
+                <div class="col-md-8">
+                    <h4>${pipeline.name}</h4>
+                    <p class="text-muted">${pipeline.description || 'No description provided'}</p>
+                </div>
+                <div class="col-md-4 text-end">
+                    <span class="status-badge status-${pipeline.status} fs-6">
+                        ${getStatusIcon(pipeline.status)} ${pipeline.status}
+                    </span>
+                </div>
+            </div>
+            
+            <div class="row mb-4">
+                <div class="col-md-3">
+                    <h6>Pipeline ID</h6>
+                    <p class="text-muted small">${pipeline.id}</p>
+                </div>
+                <div class="col-md-3">
+                    <h6>Created</h6>
+                    <p class="text-muted">${formatDateTime(pipeline.created_at)}</p>
+                </div>
+                <div class="col-md-3">
+                    <h6>Updated</h6>
+                    <p class="text-muted">${formatDateTime(pipeline.updated_at)}</p>
+                </div>
+                <div class="col-md-3">
+                    <h6>Created By</h6>
+                    <p class="text-muted">${pipeline.created_by || 'System'}</p>
+                </div>
+            </div>
+            
+            ${pipeline.schedule ? `
+                <div class="mb-4">
+                    <h6>Schedule Configuration</h6>
+                    <div class="bg-light p-3 rounded">
+                        <span class="badge bg-info">${pipeline.schedule.type}</span>
+                        ${pipeline.schedule.cron_expression ? ` - ${pipeline.schedule.cron_expression}` : ''}
+                        ${pipeline.schedule.interval ? ` - Every ${pipeline.schedule.interval} minutes` : ''}
+                    </div>
+                </div>
+            ` : ''}
+            
+            <div class="mb-4">
+                <h6>Pipeline Steps (${pipeline.steps ? pipeline.steps.length : 0})</h6>
+                <div class="pipeline-flow">
+                    ${pipeline.steps && pipeline.steps.length > 0 ? 
+                        pipeline.steps.map((step, index) => `
+                            <div class="step-card">
+                                <div class="step-number">${index + 1}</div>
+                                <div class="step-content">
+                                    <h6>${step.name}</h6>
+                                    <span class="badge bg-secondary">${step.type}</span>
+                                    ${step.description ? `<p class="text-muted small mt-1">${step.description}</p>` : ''}
+                                    ${getStepConfiguration(step)}
+                                </div>
+                            </div>
+                            ${index < pipeline.steps.length - 1 ? '<div class="step-arrow"><i class="fas fa-arrow-down"></i></div>' : ''}
+                        `).join('') : 
+                        '<div class="text-center text-muted py-3">No steps configured</div>'
+                    }
+                </div>
+            </div>
+            
+            ${pipeline.tags && pipeline.tags.length > 0 ? `
+                <div class="mb-3">
+                    <h6>Tags</h6>
+                    ${pipeline.tags.map(tag => `<span class="badge bg-light text-dark me-1">${tag}</span>`).join('')}
+                </div>
+            ` : ''}
+        `;
+        
+        modal.show();
+        
+    } catch (error) {
+        console.error('Error loading pipeline details:', error);
+        showToast('Error', 'Failed to load pipeline details', 'error');
+    }
+}
+
+function getStepConfiguration(step) {
+    let config = '';
+    
+    switch (step.type) {
+        case 'load':
+            config = `
+                <div class="step-config">
+                    <small class="text-muted">Source: ${step.source_path}</small><br>
+                    <small class="text-muted">Format: ${step.format}</small>
+                </div>
+            `;
+            break;
+        case 'save':
+            config = `
+                <div class="step-config">
+                    <small class="text-muted">Output: ${step.output_path}</small><br>
+                    <small class="text-muted">Format: ${step.format}</small>
+                </div>
+            `;
+            break;
+        case 'transform':
+            config = `
+                <div class="step-config">
+                    <small class="text-muted">Operations: ${step.operations ? step.operations.length : 0}</small>
+                    ${step.operations && step.operations.length > 0 ? 
+                        step.operations.map(op => `<br><small class="text-muted">• ${op.type}</small>`).join('') : ''
+                    }
+                </div>
+            `;
+            break;
+        case 'filter':
+            config = `
+                <div class="step-config">
+                    <small class="text-muted">Conditions: ${step.conditions ? step.conditions.length : 0}</small>
+                </div>
+            `;
+            break;
+        case 'aggregate':
+            config = `
+                <div class="step-config">
+                    <small class="text-muted">Group by: ${step.group_by ? step.group_by.join(', ') : 'None'}</small>
+                </div>
+            `;
+            break;
+        case 'join':
+            config = `
+                <div class="step-config">
+                    <small class="text-muted">Join with: ${step.right_dataset}</small><br>
+                    <small class="text-muted">Type: ${step.join_type}</small>
+                </div>
+            `;
+            break;
+    }
+    
+    return config;
+}
+
+async function executePipelineFromModal() {
+    if (window.currentPipelineId) {
+        await executePipeline(window.currentPipelineId);
+        // Close the modal
+        const modal = bootstrap.Modal.getInstance(document.getElementById('pipelineDetailsModal'));
+        if (modal) modal.hide();
+    }
+}
+
 async function deletePipeline(pipelineId) {
     if (!confirm('Are you sure you want to delete this pipeline?')) return;
     
