@@ -145,6 +145,41 @@ async def get_file_info(file_path: str):
         raise HTTPException(status_code=500, detail=str(e))
 
 
+@router.get("/files/outputs/{file_path:path}/download")
+async def download_output_file(file_path: str):
+    """Download an output file"""
+    try:
+        output_dir = Path(settings.output_directory)
+        file_full_path = output_dir / file_path
+        
+        # Debug logging
+        logger.info(f"Download request - file_path: {file_path}")
+        logger.info(f"Download request - output_dir: {output_dir}")
+        logger.info(f"Download request - file_full_path: {file_full_path}")
+        logger.info(f"Download request - file exists: {file_full_path.exists()}")
+        
+        if not file_full_path.exists() or not file_full_path.is_file():
+            raise HTTPException(status_code=404, detail="Output file not found")
+        
+        # Security check: ensure file is within output directory
+        try:
+            file_full_path.resolve().relative_to(output_dir.resolve())
+        except ValueError:
+            raise HTTPException(status_code=400, detail="Invalid file path")
+        
+        return FileResponse(
+            path=str(file_full_path),
+            filename=file_full_path.name,
+            media_type='application/octet-stream'
+        )
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error downloading output file {file_path}: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
 @router.get("/files/{file_path:path}/download")
 async def download_file(file_path: str):
     """Download a file"""
