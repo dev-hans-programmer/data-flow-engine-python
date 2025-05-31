@@ -368,7 +368,7 @@ body {
 /* Modal Styles */
 .modal-content {
     background-color: hsl(var(--surface));
-    color: hsl(var(--text));
+    color: hsl(var(--text)) !important;
     border: 1px solid hsl(var(--border));
 }
 
@@ -378,17 +378,117 @@ body {
 }
 
 .modal-title {
-    color: hsl(var(--text));
+    color: hsl(var(--text)) !important;
     font-weight: 600;
 }
 
 .modal-body {
-    color: hsl(var(--text));
+    color: hsl(var(--text)) !important;
+}
+
+.modal-body * {
+    color: hsl(var(--text)) !important;
 }
 
 .modal-footer {
     background-color: hsl(var(--light));
     border-top: 1px solid hsl(var(--border));
+}
+
+/* Fix all text elements */
+.modal-content p,
+.modal-content span,
+.modal-content div,
+.modal-content label,
+.modal-content small,
+.modal-content strong,
+.modal-content em {
+    color: hsl(var(--text)) !important;
+}
+
+/* Form elements in modals */
+.modal-content .form-control,
+.modal-content .form-select {
+    color: hsl(var(--text)) !important;
+    background-color: hsl(var(--surface)) !important;
+    border: 1px solid hsl(var(--border)) !important;
+}
+
+.modal-content .form-label {
+    color: hsl(var(--text)) !important;
+    font-weight: 500;
+}
+
+.modal-content .form-text {
+    color: hsl(var(--text-muted)) !important;
+}
+
+/* Global text visibility fixes */
+body, html {
+    color: hsl(var(--text)) !important;
+}
+
+/* Card content text */
+.card-body,
+.card-body *,
+.card-title,
+.card-text {
+    color: hsl(var(--text)) !important;
+}
+
+/* Table text */
+.table,
+.table td,
+.table th,
+.table tbody tr td {
+    color: hsl(var(--text)) !important;
+}
+
+/* Button text */
+.btn {
+    color: inherit !important;
+}
+
+.btn-primary {
+    color: white !important;
+}
+
+.btn-secondary {
+    color: white !important;
+}
+
+.btn-outline-primary,
+.btn-outline-secondary,
+.btn-outline-success,
+.btn-outline-danger {
+    color: hsl(var(--text)) !important;
+}
+
+/* Navigation text */
+.navbar-nav .nav-link {
+    color: white !important;
+}
+
+/* Input and form elements */
+.form-control,
+.form-select {
+    color: hsl(var(--text)) !important;
+    background-color: hsl(var(--surface)) !important;
+}
+
+/* General text elements */
+p, span, div, label, small, strong, em, h1, h2, h3, h4, h5, h6 {
+    color: hsl(var(--text)) !important;
+}
+
+/* List items */
+li, ul, ol {
+    color: hsl(var(--text)) !important;
+}
+
+/* Ensure status badges maintain their colors */
+.status-badge {
+    color: inherit !important;
 }
 
 /* Pipeline Details Styles */
