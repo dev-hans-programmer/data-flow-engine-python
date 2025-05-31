@@ -2,7 +2,7 @@
  * API Service - Handles all API communications
  */
 
-class ApiService {
+export default class ApiService {
     constructor() {
         this.baseUrl = '/api/v1';
         this.notificationService = null;
@@ -228,5 +228,3 @@ class ApiService {
         }
     }
 }
-
-export default ApiService;
