@@ -1,0 +1,29 @@
+modules = ["python-3.11"]
+
+[nix]
+channel = "stable-24_05"
+packages = ["arrow-cpp", "glibcLocales", "libxcrypt", "pkg-config"]
+
+[workflows]
+runButton = "Project"
+
+[[workflows.workflow]]
+name = "Project"
+mode = "parallel"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "Pipeline System Server"
+
+[[workflows.workflow]]
+name = "Pipeline System Server"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "pip install fastapi uvicorn pandas numpy pydantic aiofiles python-multipart psutil openpyxl && python main.py"
+waitForPort = 5000
+
+[deployment]
+run = ["sh", "-c", "pip install fastapi uvicorn pandas numpy pydantic aiofiles python-multipart psutil openpyxl && python main.py"]
