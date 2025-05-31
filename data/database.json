@@ -73,6 +73,43 @@
       "created_at": "2025-05-31 05:04:38.162429",
       "updated_at": "2025-05-31 05:04:42.796447",
       "created_by": null
+    },
+    {
+      "id": "72e59a69-2f71-40d9-8844-92ad133ac98f",
+      "name": "Fixed Data Processor",
+      "description": "Processes existing API data with correct path",
+      "status": "active",
+      "steps": [
+        {
+          "id": "ef8edc07-cb13-40dd-80a2-8ad5292e0d01",
+          "name": "Load Data",
+          "type": "load",
+          "description": null,
+          "enabled": true,
+          "retry_on_failure": true,
+          "max_retries": 3,
+          "source_path": "api_data_api_source_20250531_043342_20250531_043342.json",
+          "format": "json",
+          "options": {}
+        },
+        {
+          "id": "d5cb2c89-3561-4854-89d7-0f54603db949",
+          "name": "Save as CSV",
+          "type": "save",
+          "description": null,
+          "enabled": true,
+          "retry_on_failure": true,
+          "max_retries": 3,
+          "output_path": "outputs/processed_data.csv",
+          "format": "csv",
+          "options": {}
+        }
+      ],
+      "schedule": null,
+      "metadata": {},
+      "created_at": "2025-05-31 05:07:00.155047",
+      "updated_at": "2025-05-31 05:07:04.377401",
+      "created_by": null
     }
   ],
   "executions": [
@@ -112,18 +149,46 @@
       "id": "11ccd343-8b0e-4a60-814e-10c7ea1897b1",
       "pipeline_id": "0dcec088-5634-4d66-ba53-f8a8278a7280",
       "pipeline_name": "Simple Data Processor",
-      "status": "running",
+      "status": "failed",
       "start_time": "2025-05-31 05:04:46.304492",
-      "end_time": null,
-      "duration": null,
+      "end_time": "2025-05-31 05:06:46.323823",
+      "duration": 120.019331,
       "parameters": {},
       "triggered_by": "manual",
       "steps": [
         {
           "step_id": "2c4c346d-c8a9-4bf8-9d02-2c856b33eb97",
           "step_name": "Load Existing Data",
+          "status": "failed",
+          "start_time": "2025-05-31 05:06:46.319373",
+          "end_time": null,
+          "duration": null,
+          "error_message": "Source file not found: uploads/uploads/api_data_api_source_20250531_050342_20250531_050343.json",
+          "retry_count": 3,
+          "output_data": null
+        }
+      ],
+      "error_message": "Step Load Existing Data failed: Source file not found: uploads/uploads/api_data_api_source_20250531_050342_20250531_050343.json",
+      "output_files": [],
+      "logs": [],
+      "created_at": "2025-05-31 05:04:46.301042"
+    },
+    {
+      "id": "2995bde8-a915-4815-96ef-2d754a2e0ce5",
+      "pipeline_id": "72e59a69-2f71-40d9-8844-92ad133ac98f",
+      "pipeline_name": "Fixed Data Processor",
+      "status": "running",
+      "start_time": "2025-05-31 05:07:07.913563",
+      "end_time": null,
+      "duration": null,
+      "parameters": {},
+      "triggered_by": "manual",
+      "steps": [
+        {
+          "step_id": "ef8edc07-cb13-40dd-80a2-8ad5292e0d01",
+          "step_name": "Load Data",
           "status": "running",
-          "start_time": "2025-05-31 05:04:46.307319",
+          "start_time": "2025-05-31 05:07:07.914593",
           "end_time": null,
           "duration": null,
           "error_message": null,
@@ -134,7 +199,7 @@
       "error_message": null,
       "output_files": [],
       "logs": [],
-      "created_at": "2025-05-31 05:04:46.301042"
+      "created_at": "2025-05-31 05:07:07.908352"
     }
   ],
   "files": [

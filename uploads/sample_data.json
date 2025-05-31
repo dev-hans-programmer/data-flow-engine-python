@@ -1,0 +1,23 @@
+[
+  {
+    "id": 1,
+    "name": "Sample Product A",
+    "price": 29.99,
+    "category": "Electronics",
+    "timestamp": "2025-05-31T05:00:00Z"
+  },
+  {
+    "id": 2,
+    "name": "Sample Product B", 
+    "price": 45.50,
+    "category": "Books",
+    "timestamp": "2025-05-31T05:01:00Z"
+  },
+  {
+    "id": 3,
+    "name": "Sample Product C",
+    "price": 12.25,
+    "category": "Electronics", 
+    "timestamp": "2025-05-31T05:02:00Z"
+  }
+]
