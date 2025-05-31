@@ -10,7 +10,7 @@ from app.models import (
     Pipeline, PipelineCreate, PipelineUpdate, PipelineListResponse,
     PipelineStatus, ApiResponse, ErrorResponse
 )
-from app.database import db
+from app.postgres_db import postgres_db as db
 from app.pipeline_engine import engine
 from app.scheduler import PipelineScheduler
 from app.services.validation import validate_pipeline_config

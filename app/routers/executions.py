@@ -10,7 +10,7 @@ from app.models import (
     Execution, ExecutionCreate, ExecutionListResponse,
     ExecutionStatus, ApiResponse
 )
-from app.database import db
+from app.postgres_db import postgres_db as db
 from app.pipeline_engine import engine
 from app.utils.logger import get_logger
 

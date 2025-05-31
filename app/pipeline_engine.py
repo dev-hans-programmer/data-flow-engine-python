@@ -16,7 +16,7 @@ from app.models import (
     DataFormat
 )
 from app.data_processor import DataProcessor
-from app.database import db
+from app.postgres_db import postgres_db as db
 from app.utils.logger import get_logger
 from app.utils.exceptions import PipelineExecutionError, StepExecutionError
 from config import settings

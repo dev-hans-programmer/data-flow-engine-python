@@ -11,7 +11,7 @@ from fastapi.responses import FileResponse, JSONResponse
 import aiofiles
 
 from app.models import FileInfo, DataFormat, ApiResponse
-from app.database import db
+from app.postgres_db import postgres_db as db
 from app.data_processor import DataProcessor
 from app.utils.logger import get_logger
 from config import settings

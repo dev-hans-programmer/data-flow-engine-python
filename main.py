@@ -15,8 +15,7 @@ from contextlib import asynccontextmanager
 from app.routers import pipelines, executions, files, api_sources, triggers
 from app.utils.logger import setup_logging
 from app.scheduler import PipelineScheduler
-from app.db_service import db_service
-from app.db_connection import init_database, close_database
+from app.postgres_db import postgres_db
 from config import settings
 
 
@@ -35,6 +34,9 @@ async def lifespan(app: FastAPI):
     
     # Startup
     logger.info("Starting Data Processing Pipeline System")
+    
+    # Initialize PostgreSQL database
+    await postgres_db.init_database()
     
     # Initialize scheduler
     scheduler = PipelineScheduler()
