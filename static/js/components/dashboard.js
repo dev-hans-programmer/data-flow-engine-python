@@ -9,6 +9,13 @@ class DashboardComponent {
     }
 
     async load() {
+        const container = document.getElementById('dashboard-content');
+        if (!container) return;
+
+        // Inject dashboard template
+        const LayoutTemplates = (await import('../templates/layout.js')).default;
+        container.innerHTML = LayoutTemplates.getDashboardTemplate();
+
         try {
             const [stats, executions, health] = await Promise.all([
                 this.apiService.getStatistics(),

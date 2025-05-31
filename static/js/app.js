@@ -2,13 +2,14 @@
  * Main Application Controller - Orchestrates all components
  */
 
-// Import components (will be loaded via script tags)
+// Import components and templates
 import ApiService from './services/api.js';
 import UIUtils from './utils/ui.js';
 import DashboardComponent from './components/dashboard.js';
 import PipelinesComponent from './components/pipelines.js';
 import ExecutionsComponent from './components/executions.js';
 import FilesComponent from './components/files.js';
+import LayoutTemplates from './templates/layout.js';
 
 class PipelineSystemApp {
     constructor() {
@@ -34,10 +35,20 @@ class PipelineSystemApp {
     }
 
     init() {
+        this.injectLayout();
         this.setupEventListeners();
         this.setupNavigation();
         this.loadInitialContent();
         this.startAutoRefresh();
+    }
+
+    injectLayout() {
+        // Inject main layout and modals
+        const appContainer = document.getElementById('app');
+        if (appContainer) {
+            appContainer.innerHTML = LayoutTemplates.getMainLayout();
+            document.body.insertAdjacentHTML('beforeend', LayoutTemplates.getModalsTemplate());
+        }
     }
 
     setupEventListeners() {
