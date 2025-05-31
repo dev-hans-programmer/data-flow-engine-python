@@ -8,7 +8,7 @@ from datetime import datetime
 from fastapi import Request
 import logging
 from ..utils.logger import get_logger
-from ..database import get_db
+from ..database import InMemoryDatabase
 
 logger = get_logger(__name__)
 
@@ -17,7 +17,7 @@ class WebhookHandler:
     
     def __init__(self):
         self.webhook_configs = {}
-        self.db = get_db()
+        self.db = InMemoryDatabase()
     
     async def register_webhook(self, webhook_config: Dict[str, Any]) -> str:
         """Register a new webhook endpoint"""

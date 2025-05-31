@@ -12,7 +12,7 @@ import logging
 import os
 from contextlib import asynccontextmanager
 
-from app.routers import pipelines, executions, files
+from app.routers import pipelines, executions, files, api_sources, triggers
 from app.utils.logger import setup_logging
 from app.scheduler import PipelineScheduler
 from config import settings
@@ -74,6 +74,8 @@ app.add_middleware(
 app.include_router(pipelines.router, prefix="/api/v1", tags=["Pipelines"])
 app.include_router(executions.router, prefix="/api/v1", tags=["Executions"])
 app.include_router(files.router, prefix="/api/v1", tags=["Files"])
+app.include_router(api_sources.router, prefix="/api/v1", tags=["API Sources"])
+app.include_router(triggers.router, prefix="/api/v1", tags=["Triggers"])
 
 # Mount static files
 app.mount("/static", StaticFiles(directory="static"), name="static")

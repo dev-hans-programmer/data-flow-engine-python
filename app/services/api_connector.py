@@ -17,7 +17,7 @@ class APIConnector:
     
     def __init__(self):
         self.active_polls = {}
-        self.db = get_db()
+        self.db = InMemoryDatabase()
     
     async def create_api_source(self, source_config: Dict[str, Any]) -> str:
         """Create a new API data source"""
@@ -137,17 +137,19 @@ class APIConnector:
                 json.dump(result['data'], f, indent=2, default=str)
             
             # Store file info
-            await self.db.store_file_info({
-                'name': filename,
-                'path': filepath,
-                'size': len(json.dumps(result['data'])),
-                'format': 'json',
-                'metadata': {
+            from ..models import FileInfo
+            file_info = FileInfo(
+                name=filename,
+                path=filepath,
+                size=len(json.dumps(result['data'])),
+                format='json',
+                metadata={
                     'source': 'api_ingestion',
                     'api_source_id': source['id'],
                     'timestamp': result['timestamp'].isoformat()
                 }
-            })
+            )
+            await self.db.store_file_info(file_info)
             
             # Trigger pipeline if configured
             if source.get('pipeline_id'):
