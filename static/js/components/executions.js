@@ -87,7 +87,10 @@ class ExecutionsComponent {
                             </button>
                         ` : ''}
                         ${execution.output_files && execution.output_files.length > 0 ? `
-                            <button class="btn btn-outline-success" onclick="executionManager.downloadOutputs('${execution.id}')">
+                            <button class="btn btn-outline-info" onclick="executionManager.viewResults('${execution.id}')" title="View Results">
+                                <i class="fas fa-chart-bar"></i>
+                            </button>
+                            <button class="btn btn-outline-success" onclick="executionManager.downloadOutputs('${execution.id}')" title="Download">
                                 <i class="fas fa-download"></i>
                             </button>
                         ` : ''}
@@ -226,6 +229,99 @@ class ExecutionsComponent {
         } catch (error) {
             console.error('Error cancelling execution:', error);
             this.uiUtils.showToast('Error', 'Failed to cancel execution', 'error');
+        }
+    }
+
+    async viewResults(executionId) {
+        try {
+            const execution = await this.apiService.getExecution(executionId);
+            
+            if (!execution.output_files || execution.output_files.length === 0) {
+                this.uiUtils.showToast('Info', 'No output files available for this execution', 'info');
+                return;
+            }
+
+            // Show results in a modal
+            this.showResultsModal(execution);
+            
+        } catch (error) {
+            console.error('Error loading execution results:', error);
+            this.uiUtils.showToast('Error', 'Failed to load execution results', 'error');
+        }
+    }
+
+    async showResultsModal(execution) {
+        const modal = new bootstrap.Modal(document.getElementById('resultsModal'));
+        const modalTitle = document.querySelector('#resultsModal .modal-title');
+        const modalBody = document.querySelector('#resultsModal .modal-body');
+        
+        modalTitle.textContent = `Results: ${execution.pipeline_name}`;
+        modalBody.innerHTML = '<div class="text-center"><div class="spinner-border"></div></div>';
+        
+        modal.show();
+
+        try {
+            // Load and display the first output file
+            const outputFile = execution.output_files[0];
+            const response = await fetch(`/api/v1/files/preview?file_path=${encodeURIComponent(outputFile)}`);
+            
+            if (!response.ok) {
+                throw new Error('Failed to load file preview');
+            }
+            
+            const previewData = await response.json();
+            
+            modalBody.innerHTML = `
+                <div class="mb-3">
+                    <h6>Output File: ${outputFile}</h6>
+                    <p class="text-muted">Execution completed: ${new Date(execution.end_time).toLocaleString()}</p>
+                </div>
+                
+                <div class="mb-3">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span><strong>Rows:</strong> ${previewData.rows || 'N/A'}</span>
+                        <span><strong>Columns:</strong> ${previewData.columns || 'N/A'}</span>
+                        <button class="btn btn-sm btn-outline-primary" onclick="window.open('/api/v1/files/download?file_path=${encodeURIComponent(outputFile)}', '_blank')">
+                            <i class="fas fa-download"></i> Download
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="table-responsive">
+                    <table class="table table-sm table-striped">
+                        <thead>
+                            <tr>
+                                ${previewData.preview && previewData.preview.length > 0 ? 
+                                    Object.keys(previewData.preview[0]).map(col => `<th>${col}</th>`).join('') : 
+                                    '<th>No data</th>'
+                                }
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${previewData.preview ? previewData.preview.slice(0, 10).map(row => `
+                                <tr>
+                                    ${Object.values(row).map(val => `<td>${val !== null && val !== undefined ? val : ''}</td>`).join('')}
+                                </tr>
+                            `).join('') : '<tr><td colspan="100%">No preview available</td></tr>'}
+                        </tbody>
+                    </table>
+                </div>
+                
+                ${previewData.preview && previewData.preview.length > 10 ? 
+                    '<p class="text-muted small">Showing first 10 rows. Download the full file to see all data.</p>' : ''
+                }
+            `;
+            
+        } catch (error) {
+            modalBody.innerHTML = `
+                <div class="alert alert-warning">
+                    <h6>Preview not available</h6>
+                    <p>Unable to preview the results file. You can still download it using the button below.</p>
+                    <button class="btn btn-primary" onclick="window.open('/api/v1/files/download?file_path=${encodeURIComponent(execution.output_files[0])}', '_blank')">
+                        <i class="fas fa-download"></i> Download Results
+                    </button>
+                </div>
+            `;
         }
     }
 

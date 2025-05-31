@@ -123,6 +123,63 @@ async def list_files():
         raise HTTPException(status_code=500, detail=str(e))
 
 
+@router.get("/files/preview")
+async def preview_file_by_path(
+    file_path: str = Query(..., description="File path to preview"),
+    rows: int = Query(50, ge=1, le=1000, description="Number of rows to preview")
+):
+    """Preview file contents by file path"""
+    try:
+        # Handle both relative and absolute paths for output files
+        if file_path.startswith('outputs/'):
+            full_path = Path(file_path)
+        else:
+            # Check if it's a registered file
+            file_info = await db.get_file_info(file_path)
+            if file_info:
+                full_path = Path(file_info.path)
+            else:
+                # Try as direct path
+                full_path = Path(file_path)
+        
+        if not full_path.exists():
+            raise HTTPException(status_code=404, detail="File not found")
+        
+        # Determine format from file extension
+        format_map = {
+            '.csv': DataFormat.CSV,
+            '.json': DataFormat.JSON,
+            '.xlsx': DataFormat.EXCEL,
+            '.parquet': DataFormat.PARQUET
+        }
+        
+        file_format = format_map.get(full_path.suffix.lower())
+        if not file_format:
+            raise HTTPException(status_code=400, detail="Unsupported file format")
+        
+        # Load data
+        df = await data_processor.load_data(str(full_path), file_format)
+        
+        # Limit rows for preview
+        preview_df = df.head(rows)
+        
+        # Convert to dict for JSON response
+        preview_data = {
+            "file_path": file_path,
+            "rows": len(df),
+            "columns": len(df.columns),
+            "preview": preview_df.to_dict('records')
+        }
+        
+        return preview_data
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error previewing file {file_path}: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
 @router.get("/files/{file_path:path}/info", response_model=FileInfo)
 async def get_file_info(file_path: str):
     """Get information about a specific file"""
