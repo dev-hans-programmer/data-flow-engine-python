@@ -9,6 +9,7 @@ import DashboardComponent from './components/dashboard.js';
 import PipelinesComponent from './components/pipelines.js';
 import ExecutionsComponent from './components/executions.js';
 import FilesComponent from './components/files.js';
+import TransformationBuilder from './components/transformation-builder.js';
 import LayoutTemplates from './templates/layout.js';
 
 class PipelineSystemApp {
@@ -25,11 +26,13 @@ class PipelineSystemApp {
         this.pipelines = new PipelinesComponent(this.apiService, this.uiUtils);
         this.executions = new ExecutionsComponent(this.apiService, this.uiUtils);
         this.files = new FilesComponent(this.apiService, this.uiUtils);
+        this.transformationBuilder = new TransformationBuilder(this.apiService, this.uiUtils);
         
         // Global component managers for backward compatibility
         window.pipelineManager = this.pipelines;
         window.executionManager = this.executions;
         window.fileManager = this.files;
+        window.transformationBuilder = this.transformationBuilder;
         
         this.init();
     }
@@ -134,7 +137,7 @@ class PipelineSystemApp {
     }
 
     updateSectionVisibility(activeSection) {
-        const sections = ['dashboard', 'pipelines', 'executions', 'files', 'monitoring'];
+        const sections = ['dashboard', 'pipelines', 'executions', 'files', 'transformations', 'monitoring'];
         sections.forEach(section => {
             const element = document.getElementById(`${section}-section`);
             if (element) {
@@ -157,6 +160,9 @@ class PipelineSystemApp {
                     break;
                 case 'files':
                     await this.files.load();
+                    break;
+                case 'transformations':
+                    await this.transformationBuilder.load();
                     break;
                 case 'monitoring':
                     await this.loadMonitoring();

@@ -521,6 +521,132 @@ body, html {
     overflow-y: auto;
 }
 
+/* Transformation Builder Styles */
+.transformation-builder {
+    min-height: 600px;
+}
+
+.transformation-palette .transformation-block {
+    background: hsl(var(--surface));
+    border: 1px solid hsl(var(--border));
+    border-radius: var(--border-radius);
+    padding: 0.75rem;
+    margin-bottom: 0.5rem;
+    cursor: grab;
+    transition: var(--transition);
+}
+
+.transformation-block:hover {
+    border-color: hsl(var(--primary));
+    box-shadow: var(--box-shadow);
+}
+
+.transformation-block:active {
+    cursor: grabbing;
+}
+
+.transformation-canvas {
+    min-height: 400px;
+    border: 2px dashed hsl(var(--border));
+    border-radius: var(--border-radius);
+    position: relative;
+    background: hsl(var(--light) / 0.3);
+}
+
+.canvas-placeholder {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+}
+
+.canvas-transformation {
+    width: 150px;
+    background: hsl(var(--surface));
+    border: 1px solid hsl(var(--border));
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    cursor: move;
+    transition: var(--transition);
+}
+
+.canvas-transformation:hover {
+    border-color: hsl(var(--primary));
+    box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.15);
+}
+
+.canvas-transformation.selected {
+    border-color: hsl(var(--primary));
+    box-shadow: 0 0 0 2px hsl(var(--primary) / 0.2);
+}
+
+.transformation-header {
+    padding: 0.5rem;
+    background: hsl(var(--light));
+    border-bottom: 1px solid hsl(var(--border));
+    display: flex;
+    align-items: center;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.transformation-body {
+    padding: 0.5rem;
+    text-align: center;
+}
+
+.column-item {
+    padding: 0.25rem;
+    margin-bottom: 0.25rem;
+    background: hsl(var(--light) / 0.5);
+    border-radius: var(--border-radius);
+    display: flex;
+    align-items: center;
+}
+
+.form-check-list {
+    border: 1px solid hsl(var(--border));
+    border-radius: var(--border-radius);
+    padding: 0.5rem;
+    background: hsl(var(--surface));
+}
+
+.form-check-list .form-check {
+    margin-bottom: 0.25rem;
+}
+
+.form-check-list .form-check:last-child {
+    margin-bottom: 0;
+}
+
+/* Properties panel styling */
+#properties-panel .form-label {
+    font-weight: 600;
+    font-size: 0.875rem;
+    color: hsl(var(--text));
+}
+
+#properties-panel .form-control,
+#properties-panel .form-select {
+    font-size: 0.875rem;
+}
+
+/* Data preview table */
+#data-preview .table {
+    font-size: 0.75rem;
+}
+
+#data-preview .table th,
+#data-preview .table td {
+    padding: 0.25rem;
+    border: 1px solid hsl(var(--border));
+    max-width: 80px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
 .step-card {
     display: flex;
     align-items: flex-start;
