@@ -293,6 +293,62 @@
       ],
       "logs": [],
       "created_at": "2025-05-31 05:08:04.423295"
+    },
+    {
+      "id": "70457b1c-3e94-4251-ae1e-b46184e36b59",
+      "pipeline_id": "d977a858-8705-4e07-a845-72c595fab062",
+      "pipeline_name": "Simple Data Flow Demo",
+      "status": "completed",
+      "start_time": "2025-05-31 05:16:10.467912",
+      "end_time": "2025-05-31 05:16:10.519212",
+      "duration": 0.0513,
+      "parameters": {},
+      "triggered_by": "manual",
+      "steps": [
+        {
+          "step_id": "d2abe544-7369-47b7-a05c-c4f4fb644514",
+          "step_name": "Load Sample Data",
+          "status": "completed",
+          "start_time": "2025-05-31 05:16:10.502365",
+          "end_time": "2025-05-31 05:16:10.509950",
+          "duration": 0.007585,
+          "error_message": null,
+          "retry_count": 0,
+          "output_data": {
+            "rows": 3,
+            "columns": 5,
+            "column_names": [
+              "id",
+              "name",
+              "price",
+              "category",
+              "timestamp"
+            ]
+          }
+        },
+        {
+          "step_id": "605eb3ef-b737-4bc2-befd-c11aa38890ca",
+          "step_name": "Save as CSV",
+          "status": "completed",
+          "start_time": "2025-05-31 05:16:10.511866",
+          "end_time": "2025-05-31 05:16:10.517274",
+          "duration": 0.005408,
+          "error_message": null,
+          "retry_count": 0,
+          "output_data": {
+            "output_path": "outputs/outputs/processed_sample.csv",
+            "rows_saved": 3,
+            "columns_saved": 5,
+            "format": "csv"
+          }
+        }
+      ],
+      "error_message": null,
+      "output_files": [
+        "outputs/outputs/processed_sample.csv"
+      ],
+      "logs": [],
+      "created_at": "2025-05-31 05:16:10.463897"
     }
   ],
   "files": [
