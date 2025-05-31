@@ -17,7 +17,7 @@ from config import settings
 
 logger = get_logger(__name__)
 
-print("Test")
+print("Test updated")
 
 
 @dataclass
