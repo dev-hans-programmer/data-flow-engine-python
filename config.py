@@ -4,7 +4,7 @@ Configuration settings for the Data Processing Pipeline System
 
 import os
 from typing import List
-from pydantic import BaseSettings
+from pydantic_settings import BaseSettings
 
 
 class Settings(BaseSettings):
