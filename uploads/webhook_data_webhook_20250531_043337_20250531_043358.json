@@ -1,0 +1,21 @@
+{
+  "data": {
+    "order_id": "12345",
+    "customer": "John Doe",
+    "amount": 299.99,
+    "timestamp": "2024-01-01T12:00:00Z"
+  },
+  "metadata": {
+    "webhook_id": "webhook_20250531_043337",
+    "webhook_name": "Sales Data Webhook",
+    "timestamp": "2025-05-31T04:33:58.448777",
+    "source_ip": "127.0.0.1",
+    "headers": {
+      "host": "localhost:5000",
+      "user-agent": "curl/8.11.1",
+      "accept": "*/*",
+      "content-type": "application/json",
+      "content-length": "120"
+    }
+  }
+}
