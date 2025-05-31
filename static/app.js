@@ -1475,10 +1475,6 @@ function editPipeline(pipelineId) {
     showToast('Info', 'Pipeline editing will be available in a future version', 'info');
 }
 
-function viewPipelineDetails(pipelineId) {
-    showToast('Info', 'Pipeline details view will be available in a future version', 'info');
-}
-
 function downloadExecutionOutputs(executionId) {
     showToast('Info', 'Bulk download will be available in a future version', 'info');
 }
