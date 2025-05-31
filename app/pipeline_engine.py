@@ -159,7 +159,7 @@ class PipelineEngine:
     async def _execute_load_step(self, step: LoadStep, context: Dict[str, Any], step_execution: StepExecution):
         """Execute a data loading step"""
         file_path = Path(step.source_path)
-        if not file_path.is_absolute():
+        if not file_path.is_absolute() and not str(file_path).startswith(settings.upload_directory):
             file_path = Path(settings.upload_directory) / file_path
         
         if not file_path.exists():
