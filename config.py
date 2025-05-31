@@ -27,8 +27,24 @@ class Settings(BaseSettings):
     retry_attempts: int = 3
     retry_delay: int = 60  # 60 seconds
     
-    # Database settings (in-memory for this implementation)
-    database_url: str = "sqlite:///./pipelines.db"
+    # PostgreSQL Database settings
+    # Option 1: Use DATABASE_URL (if provided)
+    database_url: str = os.getenv("DATABASE_URL", "")
+    
+    # Option 2: Use individual connection parameters
+    db_host: str = os.getenv("DB_HOST", "localhost")
+    db_port: int = int(os.getenv("DB_PORT", "5432"))
+    db_name: str = os.getenv("DB_NAME", "pipeline_system")
+    db_user: str = os.getenv("DB_USER", "postgres")
+    db_password: str = os.getenv("DB_PASSWORD", "")
+    
+    @property
+    def get_database_url(self) -> str:
+        """Get the database URL, either from DATABASE_URL or constructed from individual parameters"""
+        if self.database_url:
+            return self.database_url
+        else:
+            return f"postgresql://{self.db_user}:{self.db_password}@{self.db_host}:{self.db_port}/{self.db_name}"
     
     # Logging settings
     log_level: str = "INFO"

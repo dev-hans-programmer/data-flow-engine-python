@@ -17,7 +17,9 @@ class PostgreSQLDatabase:
     """PostgreSQL database for storing pipeline data"""
     
     def __init__(self):
-        self.database_url = os.getenv("DATABASE_URL")
+        from config import Settings
+        settings = Settings()
+        self.database_url = settings.get_database_url
         if not self.database_url:
             raise ValueError("DATABASE_URL environment variable is required")
         self.connection_pool = None
@@ -226,7 +228,7 @@ class PostgreSQLDatabase:
                     execution.duration,
                     json.dumps(execution.parameters),
                     execution.triggered_by,
-                    json.dumps([step.dict() for step in execution.steps]),
+                    json.dumps([step.dict() for step in execution.steps], default=str),
                     execution.error_message,
                     json.dumps(execution.output_files),
                     json.dumps(execution.logs),
@@ -303,7 +305,7 @@ class PostgreSQLDatabase:
                     execution.start_time,
                     execution.end_time,
                     execution.duration,
-                    json.dumps([step.dict() for step in execution.steps]),
+                    json.dumps([step.dict() for step in execution.steps], default=str),
                     execution.error_message,
                     json.dumps(execution.output_files),
                     json.dumps(execution.logs)
