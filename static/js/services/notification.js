@@ -113,51 +113,9 @@ export default class NotificationService {
     initializeNotificationIcon() {
         // Wait for DOM to be ready
         setTimeout(() => {
-            const navbar = document.querySelector('.navbar-nav');
-            if (navbar && !document.getElementById('notification-icon')) {
-                const notificationHtml = `
-                    <li class="nav-item dropdown" id="notification-dropdown">
-                        <a class="nav-link position-relative" href="#" id="notification-icon" 
-                           data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="fas fa-bell"></i>
-                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" 
-                                  id="notification-badge" style="display: none;">
-                                0
-                            </span>
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-end notification-dropdown" 
-                            aria-labelledby="notification-icon" style="width: 350px; max-height: 400px; overflow-y: auto;">
-                            <li class="dropdown-header d-flex justify-content-between align-items-center">
-                                <span>Notifications</span>
-                                <div>
-                                    <button class="btn btn-sm btn-outline-primary me-1" id="mark-all-read">
-                                        <i class="fas fa-check"></i>
-                                    </button>
-                                    <button class="btn btn-sm btn-outline-danger" id="clear-all-notifications">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
-                                </div>
-                            </li>
-                            <li><hr class="dropdown-divider"></li>
-                            <div id="notification-list">
-                                <li class="dropdown-item text-muted text-center">
-                                    No notifications
-                                </li>
-                            </div>
-                        </ul>
-                    </li>
-                `;
-                
-                // Insert before the status text
-                const statusElement = navbar.querySelector('.navbar-text');
-                if (statusElement) {
-                    statusElement.insertAdjacentHTML('beforebegin', notificationHtml);
-                }
-                
-                this.setupEventListeners();
-                this.updateNotificationIcon();
-            }
-        }, 1000);
+            this.setupEventListeners();
+            this.updateNotificationIcon();
+        }, 500);
     }
 
     /**
